@@ -1,12 +1,16 @@
 local CoreGui = game:GetService("CoreGui") or game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui")
 
+local GUI_WIDTH = 260
+local GUI_HEIGHT = 195
+local TEXTBOX_HEIGHT = 60
+
 local screenGui = Instance.new("ScreenGui")
 screenGui.Name = "ConsoleTyperGUI"
 screenGui.Parent = CoreGui
 
 local frame = Instance.new("Frame")
 frame.Parent = screenGui
-frame.Size = UDim2.new(0, 200, 0, 150)
+frame.Size = UDim2.new(0, GUI_WIDTH, 0, GUI_HEIGHT)
 frame.BackgroundColor3 = Color3.new(0.3, 0.3, 0.3)
 frame.BackgroundTransparency = 0.35
 frame.BorderSizePixel = 0
@@ -15,29 +19,35 @@ local corner = Instance.new("UICorner")
 corner.Parent = frame
 corner.CornerRadius = UDim.new(0.2, 0)
 
-frame.Position = UDim2.new(0.5, -100, 0.5, -75)
-
+frame.Position = UDim2.new(0.5, -GUI_WIDTH/2, 0.5, -GUI_HEIGHT/2)
 frame.Active = true
 frame.Draggable = true
 
 local textBox = Instance.new("TextBox")
 textBox.Parent = frame
-textBox.Size = UDim2.new(0.8, 0, 0.3, 0)
+textBox.Size = UDim2.new(0.8, 0, 0, TEXTBOX_HEIGHT)
 textBox.Position = UDim2.new(0.1, 0, 0.1, 0)
 textBox.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
 textBox.TextColor3 = Color3.new(1, 1, 1)
 textBox.PlaceholderText = "Введите текст..."
 textBox.Text = ""
 textBox.ClearTextOnFocus = false
+textBox.TextWrapped = true
+textBox.TextXAlignment = Enum.TextXAlignment.Left
+textBox.TextYAlignment = Enum.TextYAlignment.Top
 textBox.MultiLine = true
+textBox.Font = Enum.Font.SourceSans
+textBox.TextSize = 16
 
 local button = Instance.new("TextButton")
 button.Parent = frame
 button.Size = UDim2.new(0.6, 0, 0.25, 0)
-button.Position = UDim2.new(0.2, 0, 0.5, 0)
+button.Position = UDim2.new(0.2, 0, 0.55, 0)
 button.BackgroundColor3 = Color3.new(0.15, 0.15, 0.15)
 button.TextColor3 = Color3.new(1, 1, 1)
 button.Text = "Отправить"
+button.Font = Enum.Font.SourceSans
+button.TextSize = 16
 
 local buttonCorner = Instance.new("UICorner")
 buttonCorner.Parent = button
@@ -45,6 +55,8 @@ buttonCorner.CornerRadius = UDim.new(0.2, 0)
 
 local function processSpecialChars(str)
     str = str:gsub("\\n", "\n")
+    str = str:gsub("\\\\", "\\")
+    str = str:gsub("\\t", "\t")
     return str
 end
 
@@ -52,11 +64,16 @@ button.MouseButton1Click:Connect(function()
     if textBox.Text ~= "" then
         local processedText = processSpecialChars(textBox.Text)
         _G.text = processedText
-        
         loadstring(game:HttpGet("https://github.com/sovetskii-shashlik/FE-console-typer/raw/refs/heads/main/Console%20system"))()
-        
+        local originalText = textBox.Text
         textBox.Text = "Отправлено!"
         task.wait(0.5)
-        textBox.Text = ""
+        textBox.Text = originalText
+    end
+end)
+
+textBox:GetPropertyChangedSignal("Text"):Connect(function()
+    if textBox.TextSize ~= 16 then
+        textBox.TextSize = 16
     end
 end)
