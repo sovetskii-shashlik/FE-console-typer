@@ -1,8 +1,8 @@
 local CoreGui = game:GetService("CoreGui") or game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui")
 
-local GUI_WIDTH = 260
-local GUI_HEIGHT = 195
-local TEXTBOX_HEIGHT = 60
+local GUI_WIDTH = 200
+local GUI_HEIGHT = 100
+local TEXTBOX_HEIGHT = 40
 
 local screenGui = Instance.new("ScreenGui")
 screenGui.Name = "ConsoleTyperGUI"
@@ -65,10 +65,6 @@ button.MouseButton1Click:Connect(function()
         local processedText = processSpecialChars(textBox.Text)
         _G.text = processedText
         loadstring(game:HttpGet("https://github.com/sovetskii-shashlik/FE-console-typer/raw/refs/heads/main/Console%20system"))()
-        local originalText = textBox.Text
-        textBox.Text = "Отправлено!"
-        task.wait(0.5)
-        textBox.Text = originalText
     end
 end)
 
