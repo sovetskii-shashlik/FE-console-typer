@@ -39,6 +39,11 @@ textBox.MultiLine = true
 textBox.Font = Enum.Font.SourceSans
 textBox.TextSize = 16
 
+-- Добавляем закругление для TextBox
+local textBoxCorner = Instance.new("UICorner")
+textBoxCorner.Parent = textBox
+textBoxCorner.CornerRadius = UDim.new(0.2, 0)
+
 local button = Instance.new("TextButton")
 button.Parent = frame
 button.Size = UDim2.new(0.6, 0, 0.25, 0)
