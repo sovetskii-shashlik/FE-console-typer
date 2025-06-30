@@ -23,6 +23,35 @@ frame.Position = UDim2.new(0.5, -GUI_WIDTH/2, 0.5, -GUI_HEIGHT/2)
 frame.Active = true
 frame.Draggable = true
 
+local borderFrame = Instance.new("Frame")
+borderFrame.Size = frame.Size
+borderFrame.Position = frame.Position
+borderFrame.BackgroundTransparency = 1
+borderFrame.AnchorPoint = frame.AnchorPoint
+borderFrame.ZIndex = frame.ZIndex - 1
+borderFrame.Parent = screenGui
+
+local borderCorner = frame.UICorner:Clone()
+borderCorner.Parent = borderFrame
+
+local borderStroke = Instance.new("UIStroke")
+borderStroke.Thickness = 3
+borderStroke.LineJoinMode = Enum.LineJoinMode.Round
+borderStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Contextual
+borderStroke.Parent = borderFrame
+
+frame:GetPropertyChangedSignal("Position"):Connect(function()
+    borderFrame.Position = frame.Position
+end)
+
+frame:GetPropertyChangedSignal("Size"):Connect(function()
+    borderFrame.Size = frame.Size
+end)
+
+frame.UICorner:GetPropertyChangedSignal("CornerRadius"):Connect(function()
+    borderCorner.CornerRadius = frame.UICorner.CornerRadius
+end)
+
 local textBox = Instance.new("TextBox")
 textBox.Parent = frame
 textBox.Size = UDim2.new(0.8, 0, 0, TEXTBOX_HEIGHT)
