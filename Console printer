@@ -65,7 +65,7 @@ textBox.TextWrapped = true
 textBox.TextXAlignment = Enum.TextXAlignment.Left
 textBox.TextYAlignment = Enum.TextYAlignment.Top
 textBox.MultiLine = true
-textBox.Font = Enum.Font.SourceSans
+textBox.Font = Enum.Font.GothamBold
 textBox.TextSize = 16
 
 local textBoxCorner = Instance.new("UICorner")
@@ -79,7 +79,7 @@ button.Position = UDim2.new(0.2, 0, 0.55, 0)
 button.BackgroundColor3 = Color3.new(0.15, 0.15, 0.15)
 button.TextColor3 = Color3.new(1, 1, 1)
 button.Text = "Send"
-button.Font = Enum.Font.SourceSans
+button.Font = Enum.Font.GothamBold
 button.TextSize = 16
 
 local buttonCorner = Instance.new("UICorner")
