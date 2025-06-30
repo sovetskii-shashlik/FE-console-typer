@@ -1,5 +1,3 @@
-
-
 local local_player = game:GetService("Players").LocalPlayer
 local animate = local_player.Character.Animate
 local idle_anim = animate.idle.Animation1
