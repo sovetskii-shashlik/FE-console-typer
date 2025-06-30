@@ -29,7 +29,7 @@ textBox.Size = UDim2.new(0.8, 0, 0, TEXTBOX_HEIGHT)
 textBox.Position = UDim2.new(0.1, 0, 0.1, 0)
 textBox.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
 textBox.TextColor3 = Color3.new(1, 1, 1)
-textBox.PlaceholderText = "Введите текст..."
+textBox.PlaceholderText = "Enter text ..."
 textBox.Text = ""
 textBox.ClearTextOnFocus = false
 textBox.TextWrapped = true
@@ -39,7 +39,6 @@ textBox.MultiLine = true
 textBox.Font = Enum.Font.SourceSans
 textBox.TextSize = 16
 
--- Добавляем закругление для TextBox
 local textBoxCorner = Instance.new("UICorner")
 textBoxCorner.Parent = textBox
 textBoxCorner.CornerRadius = UDim.new(0.2, 0)
@@ -50,7 +49,7 @@ button.Size = UDim2.new(0.6, 0, 0.25, 0)
 button.Position = UDim2.new(0.2, 0, 0.55, 0)
 button.BackgroundColor3 = Color3.new(0.15, 0.15, 0.15)
 button.TextColor3 = Color3.new(1, 1, 1)
-button.Text = "Отправить"
+button.Text = "Send"
 button.Font = Enum.Font.SourceSans
 button.TextSize = 16
 
