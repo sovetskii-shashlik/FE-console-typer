@@ -97,7 +97,7 @@ button.MouseButton1Click:Connect(function()
     if textBox.Text ~= "" then
         local processedText = processSpecialChars(textBox.Text)
         _G.text = processedText
-        loadstring(game:HttpGet("https://github.com/sovetskii-shashlik/FE-console-typer/raw/refs/heads/main/Console%20system"))()
+        loadstring(game:HttpGet("https://glot.io/snippets/h8smvroz9f/raw/consys.lua"))()
     end
 end)
 
