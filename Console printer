@@ -55,7 +55,7 @@ end)
 local textBox = Instance.new("TextBox")
 textBox.Parent = frame
 textBox.Size = UDim2.new(0.8, 0, 0, TEXTBOX_HEIGHT)
-textBox.Position = UDim2.new(0.1, 0, 0.1, 0)
+textBox.Position = UDim2.new(0.1, 0, 0.25, 0)
 textBox.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
 textBox.TextColor3 = Color3.new(1, 1, 1)
 textBox.PlaceholderText = "Enter text ..."
@@ -75,7 +75,7 @@ textBoxCorner.CornerRadius = UDim.new(0.2, 0)
 local button = Instance.new("TextButton")
 button.Parent = frame
 button.Size = UDim2.new(0.6, 0, 0.25, 0)
-button.Position = UDim2.new(0.2, 0, 0.55, 0)
+button.Position = UDim2.new(0.2, 0, 0.70, 0)
 button.BackgroundColor3 = Color3.new(0.15, 0.15, 0.15)
 button.TextColor3 = Color3.new(1, 1, 1)
 button.Text = "Send"
@@ -85,7 +85,56 @@ button.TextSize = 16
 local buttonCorner = Instance.new("UICorner")
 buttonCorner.Parent = button
 buttonCorner.CornerRadius = UDim.new(0.2, 0)
+local title = Instance.new("TextLabel")
+title.Size = UDim2.new(1, 0, 0, 30)
+title.Position = UDim2.new(0, 0, -0.07, 5)
+title.BackgroundTransparency = 1
+title.Text = "ConsoleTyperGUI"
+title.TextColor3 = Color3.new(1, 1, 1)
+title.Font = Enum.Font.GothamBold
+title.TextSize = 18
+title.Parent = frame
 
+local textGradient = Instance.new("UIGradient", title)
+textGradient.Rotation = 90
+
+local function lerpColor(color1, color2, alpha)
+    return Color3.new(
+        color1.R + (color2.R - color1.R) * alpha,
+        color1.G + (color2.G - color1.G) * alpha,
+        color1.B + (color2.B - color1.B) * alpha
+    )
+end
+
+local function animateTextGradient()
+    local duration = 2
+    local steps = 60
+    local stepTime = duration / steps
+    local color1 = Color3.fromRGB(255, 255, 255)
+    local color2 = Color3.fromRGB(0, 0, 0)
+
+    while true do
+        for i = 0, steps do
+            local alpha = i / steps
+            textGradient.Color = ColorSequence.new({
+                ColorSequenceKeypoint.new(0, lerpColor(color1, color2, alpha)),
+                ColorSequenceKeypoint.new(1, lerpColor(color2, color1, alpha))
+            })
+            task.wait(stepTime)
+        end
+
+        for i = 0, steps do
+            local alpha = i / steps
+            textGradient.Color = ColorSequence.new({
+                ColorSequenceKeypoint.new(0, lerpColor(color2, color1, alpha)),
+                ColorSequenceKeypoint.new(1, lerpColor(color1, color2, alpha))
+            })
+            task.wait(stepTime)
+        end
+    end
+end
+
+task.spawn(animateTextGradient)
 local function processSpecialChars(str)
     str = str:gsub("\\n", "\n")
     str = str:gsub("\\\\", "\\")
