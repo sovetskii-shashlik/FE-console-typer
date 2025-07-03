@@ -85,6 +85,14 @@ button.TextSize = 16
 local buttonCorner = Instance.new("UICorner")
 buttonCorner.Parent = button
 buttonCorner.CornerRadius = UDim.new(0.2, 0)
+
+local function processSpecialChars(str)
+    str = str:gsub("\\n", "\n")
+    str = str:gsub("\\\\", "\\")
+    str = str:gsub("\\t", "\t")
+    return str
+end
+
 button.MouseButton1Click:Connect(function()
     if textBox.Text ~= "" then
         local processedText = processSpecialChars(textBox.Text)
