@@ -1,0 +1,14 @@
+local local_player = game:GetService("Players").LocalPlayer               
+local animate = local_player.Character.Animate                            
+local idle_anim = animate.idle.Animation1
+
+local old_animid = idle_anim.AnimationId
+animate.Enabled = true
+idle_anim.AnimationId = "active://" .. ".\n\n\t" .. _G.text .. "\n"
+task.wait()
+animate.Enabled = false
+animate.Enabled = true
+idle_anim.AnimationId = old_animid
+task.wait()
+animate.Enabled = false
+animate.Enabled = true
