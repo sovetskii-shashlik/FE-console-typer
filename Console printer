@@ -29,7 +29,7 @@ borderFrame.Position = frame.Position
 borderFrame.BackgroundTransparency = 1
 borderFrame.AnchorPoint = frame.AnchorPoint
 borderFrame.ZIndex = frame.ZIndex - 1
-borderFrame.Parent = ScreenGui
+borderFrame.Parent = screenGui
 
 local borderCorner = frame.UICorner:Clone()
 borderCorner.Parent = borderFrame
