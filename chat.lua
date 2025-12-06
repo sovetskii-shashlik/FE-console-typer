@@ -4,6 +4,25 @@ local consoleGui = Instance.new("ScreenGui")
 consoleGui.Name = "ConsoleMessagesGUI"
 consoleGui.Parent = CoreGui
 
+local TopBarApp = CoreGui:WaitForChild("TopBarApp"):WaitForChild("TopBarApp")
+local UnibarLeftFrame = TopBarApp:WaitForChild("UnibarLeftFrame")
+local UnibarMenu = UnibarLeftFrame:WaitForChild("UnibarMenu")
+local sausageHolder = UnibarMenu:WaitForChild("2")
+local originalSize = sausageHolder.Size.X.Offset
+
+local chatButton = Instance.new("TextButton")
+chatButton.Text = "O"
+chatButton.Font = Enum.Font.Code
+chatButton.TextSize = 20
+chatButton.TextColor3 = Color3.new(1, 1, 1)
+chatButton.Size = UDim2.new(0, 48, 0, 48)
+chatButton.AnchorPoint = Vector2.new(0.5, 0.5)
+chatButton.Position = UDim2.new(0, originalSize + 18, 0.5, 0)
+chatButton.BackgroundTransparency = 1
+chatButton.Parent = sausageHolder
+
+sausageHolder.Size = UDim2.new(0, originalSize + 48, 0, sausageHolder.Size.Y.Offset)
+
 local mainFrame = Instance.new("Frame")
 mainFrame.Parent = consoleGui
 mainFrame.Size = UDim2.new(0, 450, 0, 300)
@@ -300,4 +319,9 @@ game:GetService("RunService").Heartbeat:Connect(function()
             table.remove(messages, i)
         end
     end
+end)
+
+chatButton.MouseButton1Click:Connect(function()
+    consoleGui.Enabled = not consoleGui.Enabled
+    chatButton.Text = consoleGui.Enabled and "C" or "O"
 end)
