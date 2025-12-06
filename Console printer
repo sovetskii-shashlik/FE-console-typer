@@ -74,8 +74,8 @@ textBoxCorner.CornerRadius = UDim.new(0.2, 0)
 
 local button = Instance.new("TextButton")
 button.Parent = frame
-button.Size = UDim2.new(0.6, 0, 0.25, 0)
-button.Position = UDim2.new(0.2, 0, 0.55, 0)
+button.Size = UDim2.new(0.40, 0, 0.25, 0)
+button.Position = UDim2.new(0.1, 0, 0.55, 0)
 button.BackgroundColor3 = Color3.new(0.15, 0.15, 0.15)
 button.TextColor3 = Color3.new(1, 1, 1)
 button.Text = "Send"
@@ -86,6 +86,20 @@ local buttonCorner = Instance.new("UICorner")
 buttonCorner.Parent = button
 buttonCorner.CornerRadius = UDim.new(0.2, 0)
 
+local buttonAnon = Instance.new("TextButton")
+buttonAnon.Parent = frame
+buttonAnon.Size = UDim2.new(0.40, 0, 0.25, 0)
+buttonAnon.Position = UDim2.new(0.50, 0, 0.55, 0)
+buttonAnon.BackgroundColor3 = Color3.new(0.15, 0.15, 0.15)
+buttonAnon.TextColor3 = Color3.new(1, 1, 1)
+buttonAnon.Text = "Send Anon"
+buttonAnon.Font = Enum.Font.GothamBold
+buttonAnon.TextSize = 16
+
+local buttonAnonCorner = Instance.new("UICorner")
+buttonAnonCorner.Parent = buttonAnon
+buttonAnonCorner.CornerRadius = UDim.new(0.2, 0)
+
 local function processSpecialChars(str)
     str = str:gsub("\\n", "\n")
     str = str:gsub("\\\\", "\\")
@@ -95,7 +109,16 @@ end
 
 button.MouseButton1Click:Connect(function()
     if textBox.Text ~= "" then
-        local processedText = processSpecialChars(textBox.Text)
+        local playerName = game.Players.LocalPlayer.Name
+        local processedText = processSpecialChars(playerName .. ": " .. textBox.Text)
+        _G.text = processedText
+        loadstring(game:HttpGet("https://glot.io/snippets/h8smvroz9f/raw/consys.lua"))()
+    end
+end)
+
+buttonAnon.MouseButton1Click:Connect(function()
+    if textBox.Text ~= "" then
+        local processedText = processSpecialChars("[anonim]: " .. textBox.Text)
         _G.text = processedText
         loadstring(game:HttpGet("https://glot.io/snippets/h8smvroz9f/raw/consys.lua"))()
     end
