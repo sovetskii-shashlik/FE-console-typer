@@ -6,8 +6,8 @@ consoleGui.Parent = CoreGui
 
 local mainFrame = Instance.new("Frame")
 mainFrame.Parent = consoleGui
-mainFrame.Size = UDim2.new(0, 400, 0, 300)
-mainFrame.Position = UDim2.new(0.5, -200, 0, 10)
+mainFrame.Size = UDim2.new(0, 450, 0, 300)
+mainFrame.Position = UDim2.new(0.5, -210, 0, 10)
 mainFrame.BackgroundColor3 = Color3.new(0, 0, 0)
 mainFrame.BackgroundTransparency = 0.5
 mainFrame.BorderSizePixel = 0
@@ -23,15 +23,17 @@ title.Position = UDim2.new(0, 0, 0, 0)
 title.BackgroundColor3 = Color3.new(0, 0, 0)
 title.BackgroundTransparency = 0.7
 title.TextColor3 = Color3.new(1, 1, 1)
-title.Text = "Chat for exploiters "
+title.Text = "Chat for exploiters"
 title.Font = Enum.Font.SourceSansBold
 title.TextSize = 16
 title.TextXAlignment = Enum.TextXAlignment.Center
-
+local corner = Instance.new("UICorner")
+corner.Parent = title
+corner.CornerRadius = UDim.new(0.5, 0)
 local closeButton = Instance.new("TextButton")
 closeButton.Parent = title
-closeButton.Size = UDim2.new(0, 25, 0, 25)
-closeButton.Position = UDim2.new(1, -30, 0.5, -12.5)
+closeButton.Size = UDim2.new(0, 20, 0, 20)
+closeButton.Position = UDim2.new(1, -30, 0.5, -10)
 closeButton.BackgroundColor3 = Color3.new(0.3, 0.3, 0.3)
 closeButton.BackgroundTransparency = 0.7
 closeButton.TextColor3 = Color3.new(1, 1, 1)
@@ -45,7 +47,7 @@ end)
 
 local chatBackground = Instance.new("Frame")
 chatBackground.Parent = mainFrame
-chatBackground.Size = UDim2.new(1, 0, 0.7, 0)
+chatBackground.Size = UDim2.new(1, 0, 0.615, 0)
 chatBackground.Position = UDim2.new(0, 0, 0, 30)
 chatBackground.BackgroundColor3 = Color3.new(0, 0, 0)
 chatBackground.BackgroundTransparency = 0.8
@@ -53,7 +55,7 @@ chatBackground.BorderSizePixel = 0
 
 local messagesContainer = Instance.new("ScrollingFrame")
 messagesContainer.Parent = chatBackground
-messagesContainer.Size = UDim2.new(1, -5, 1, -5)
+messagesContainer.Size = UDim2.new(1, -10, 1, -10)
 messagesContainer.Position = UDim2.new(0, 5, 0, 5)
 messagesContainer.BackgroundTransparency = 1
 messagesContainer.ScrollBarThickness = 4
@@ -69,8 +71,8 @@ listLayout.SortOrder = Enum.SortOrder.LayoutOrder
 
 local inputFrame = Instance.new("Frame")
 inputFrame.Parent = mainFrame
-inputFrame.Size = UDim2.new(1, 0, 0.25, 0)
-inputFrame.Position = UDim2.new(0, 0, 0.75, 0)
+inputFrame.Size = UDim2.new(1, 0, 0.285, 0)
+inputFrame.Position = UDim2.new(0, 0, 0.715, 0)
 inputFrame.BackgroundColor3 = Color3.new(0, 0, 0)
 inputFrame.BackgroundTransparency = 0.6
 inputFrame.BorderSizePixel = 0
@@ -141,7 +143,7 @@ local lastMessageTime = {}
 
 local function addMessage(fullText)
     if not fullText or fullText == "" then return end
-    
+
     local currentTime = os.time()
     if lastMessageTime[fullText] then
         local timeDiff = currentTime - lastMessageTime[fullText]
@@ -149,11 +151,11 @@ local function addMessage(fullText)
             return
         end
     end
-    
+
     lastMessageTime[fullText] = currentTime
-    
+
     messageCount = messageCount + 1
-    
+
     local messageFrame = Instance.new("Frame")
     messageFrame.Name = "Message_" .. messageCount
     messageFrame.Parent = messagesContainer
@@ -161,9 +163,9 @@ local function addMessage(fullText)
     messageFrame.AutomaticSize = Enum.AutomaticSize.Y
     messageFrame.BackgroundTransparency = 1
     messageFrame.LayoutOrder = messageCount
-    
+
     local textColor = Color3.new(0, 162, 255)
-    
+
     local textLabel = Instance.new("TextLabel")
     textLabel.Parent = messageFrame
     textLabel.Size = UDim2.new(1, 0, 0, 0)
@@ -176,23 +178,23 @@ local function addMessage(fullText)
     textLabel.TextWrapped = true
     textLabel.TextXAlignment = Enum.TextXAlignment.Left
     textLabel.RichText = true
-    
+
     table.insert(messages, {
         frame = messageFrame,
         text = fullText,
         time = currentTime
     })
-    
+
     task.wait(0.05)
     messagesContainer.CanvasPosition = Vector2.new(0, messagesContainer.AbsoluteCanvasSize.Y)
-    
+
     if #messages > 100 then
         local oldest = table.remove(messages, 1)
         if oldest and oldest.frame then
             oldest.frame:Destroy()
         end
     end
-    
+
     for text, time in pairs(lastMessageTime) do
         if currentTime - time > 5 then
             lastMessageTime[text] = nil
@@ -203,11 +205,11 @@ end
 local function parseConsoleMessage(messageText)
     local startPos = messageText:find("active://")
     if not startPos then return end
-    
+
     local textStart = startPos + #"active://"
     local extractedText = messageText:sub(textStart)
     extractedText = extractedText:gsub("^[\n\r\t\s]+", "")
-    
+
     local stackPositions = {
         extractedText:find("\n%s*Stack Begin"),
         extractedText:find("\n%s*Script '"),
@@ -215,28 +217,28 @@ local function parseConsoleMessage(messageText)
         extractedText:find("\n%s*%.%.%."),
         extractedText:find("\n%s*'"),
     }
-    
+
     local cutPosition = nil
     for _, pos in ipairs(stackPositions) do
         if pos and (not cutPosition or pos < cutPosition) then
             cutPosition = pos
         end
     end
-    
+
     if cutPosition then
         extractedText = extractedText:sub(1, cutPosition - 1)
     end
-    
+
     extractedText = extractedText:gsub("[\n\r\t\s]+$", "")
     extractedText = extractedText:gsub("[,%.]+$", "")
-    
+
     if extractedText and #extractedText >= 2 then
         if not extractedText:match("^%d+") and
            not extractedText:match("^Animation") and
            not extractedText:match("^http[s]?://") and
            not extractedText:match("^Workspace%.") and
            not extractedText:match("^Line %d+") then
-            
+
             addMessage(extractedText)
         end
     end
