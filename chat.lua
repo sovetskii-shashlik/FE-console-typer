@@ -327,7 +327,7 @@ chatButton.MouseButton1Click:Connect(function()
 end)
 
 consoleGui.Enabled = false
-chatButton.Text = "C"
+chatButton.Text = "O"
 
 game:GetService("RunService").RenderStepped:Connect(function()
     if sausageHolder.Size.X.Offset ~= originalSize + 36 then
