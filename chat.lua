@@ -160,6 +160,66 @@ local messages = {}
 local messageCount = 0
 local lastMessageTime = {}
 
+local base64chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
+
+local function base64encode(data)
+    local bytes = {}
+    for i = 1, #data do
+        table.insert(bytes, string.byte(data, i))
+    end
+    
+    local result = ""
+    for i = 1, #bytes, 3 do
+        local b1, b2, b3 = bytes[i], bytes[i+1], bytes[i+2]
+        local n = (b1 or 0) * 0x10000 + (b2 or 0) * 0x100 + (b3 or 0)
+        
+        local c1 = math.floor(n / 0x40000) % 64 + 1
+        local c2 = math.floor(n / 0x1000) % 64 + 1
+        local c3 = math.floor(n / 0x40) % 64 + 1
+        local c4 = n % 64 + 1
+        
+        result = result .. string.sub(base64chars, c1, c1)
+        result = result .. string.sub(base64chars, c2, c2)
+        result = result .. (b2 and string.sub(base64chars, c3, c3) or "=")
+        result = result .. (b3 and string.sub(base64chars, c4, c4) or "=")
+    end
+    
+    return result
+end
+
+local function base64decode(data)
+    data = string.gsub(data, "[^%w%+/=]", "")
+    
+    local result = ""
+    for i = 1, #data, 4 do
+        local s1 = string.find(base64chars, string.sub(data, i, i)) or 0
+        local s2 = string.find(base64chars, string.sub(data, i+1, i+1)) or 0
+        local s3 = string.find(base64chars, string.sub(data, i+2, i+2)) or 0
+        local s4 = string.find(base64chars, string.sub(data, i+3, i+3)) or 0
+        
+        s1 = (s1 > 0 and s1-1) or 0
+        s2 = (s2 > 0 and s2-1) or 0
+        s3 = (s3 > 0 and s3-1) or 0
+        s4 = (s4 > 0 and s4-1) or 0
+        
+        local n = s1 * 0x40000 + s2 * 0x1000 + s3 * 0x40 + s4
+        
+        local b1 = math.floor(n / 0x10000) % 256
+        local b2 = math.floor(n / 0x100) % 256
+        local b3 = n % 256
+        
+        result = result .. string.char(b1)
+        if s3 ~= 64 then
+            result = result .. string.char(b2)
+        end
+        if s4 ~= 64 then
+            result = result .. string.char(b3)
+        end
+    end
+    
+    return result
+end
+
 local function addMessage(fullText)
     if not fullText or fullText == "" then return end
 
@@ -258,7 +318,18 @@ local function parseConsoleMessage(messageText)
            not extractedText:match("^Workspace%.") and
            not extractedText:match("^Line %d+") then
 
-            addMessage(extractedText)
+            if #extractedText > 20 then
+                local success, decoded = pcall(function()
+                    return base64decode(extractedText)
+                end)
+                if success and decoded and #decoded > 0 then
+                    addMessage(decoded)
+                else
+                    addMessage(extractedText)
+                end
+            else
+                addMessage(extractedText)
+            end
         end
     end
 end
@@ -290,7 +361,8 @@ sendButton.MouseButton1Click:Connect(function()
     if textBox.Text ~= "" then
         local playerName = game.Players.LocalPlayer.Name
         local processedText = processSpecialChars(playerName .. ": " .. textBox.Text)
-        _G.text = processedText
+        local encodedText = base64encode(processedText)
+        _G.text = encodedText
         loadstring(game:HttpGet("https://glot.io/snippets/h8smvroz9f/raw/consys.lua"))()
         textBox.Text = ""
     end
@@ -299,7 +371,8 @@ end)
 sendAnonButton.MouseButton1Click:Connect(function()
     if textBox.Text ~= "" then
         local processedText = processSpecialChars("[anonim]: " .. textBox.Text)
-        _G.text = processedText
+        local encodedText = base64encode(processedText)
+        _G.text = encodedText
         loadstring(game:HttpGet("https://glot.io/snippets/h8smvroz9f/raw/consys.lua"))()
         textBox.Text = ""
     end
