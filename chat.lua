@@ -321,16 +321,19 @@ game:GetService("RunService").Heartbeat:Connect(function()
     end
 end)
 
-chatButton.MouseButton1Click:Connect(function()
-    consoleGui.Enabled = not consoleGui.Enabled
+local function shish()
+  consoleGui.Enabled = not consoleGui.Enabled
     chatButton.Text = consoleGui.Enabled and "C" or "O"
+end
+
+chatButton.MouseButton1Click:Connect(function()
+    shish()
 end)
 
 game:GetService("RunService").RenderStepped:Connect(function()
-    if sausageHolder.Size.X.Offset ~= originalSize + 36 then
+    if sausageHolder.Size.X.Offset ~= originalSize + 48 then
         sausageHolder.Size = UDim2.new(0, originalSize + 48, 0, sausageHolder.Size.Y.Offset)
     end
 end)
 
-consoleGui.Enabled = true
-chatButton.Text = "C"
+shish()
