@@ -159,6 +159,8 @@ clearButton.TextSize = 12
 local messages = {}
 local messageCount = 0
 local lastMessageTime = {}
+local hasNewMessages = false
+local lastOpenedTime = 0
 
 local base64chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
 
@@ -220,6 +222,14 @@ local function base64decode(data)
     return result
 end
 
+local function updateButtonColor()
+    if hasNewMessages and not consoleGui.Enabled then
+        chatButton.TextColor3 = Color3.new(1, 0, 0)
+    else
+        chatButton.TextColor3 = Color3.new(1, 1, 1)
+    end
+end
+
 local function addMessage(fullText)
     if not fullText or fullText == "" then return end
 
@@ -263,6 +273,11 @@ local function addMessage(fullText)
         text = fullText,
         time = currentTime
     })
+
+    if currentTime > lastOpenedTime then
+        hasNewMessages = true
+        updateButtonColor()
+    end
 
     task.wait(0.05)
     messagesContainer.CanvasPosition = Vector2.new(0, messagesContainer.AbsoluteCanvasSize.Y)
@@ -395,8 +410,16 @@ game:GetService("RunService").Heartbeat:Connect(function()
 end)
 
 local function shish()
-  consoleGui.Enabled = not consoleGui.Enabled
+    consoleGui.Enabled = not consoleGui.Enabled
     chatButton.Text = consoleGui.Enabled and "C" or "O"
+    
+    if consoleGui.Enabled then
+        lastOpenedTime = os.time()
+        hasNewMessages = false
+        updateButtonColor()
+    else
+        updateButtonColor()
+    end
 end
 
 chatButton.MouseButton1Click:Connect(function()
@@ -410,3 +433,4 @@ game:GetService("RunService").RenderStepped:Connect(function()
 end)
 
 shish()
+updateButtonColor()
