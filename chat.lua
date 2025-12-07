@@ -326,11 +326,11 @@ chatButton.MouseButton1Click:Connect(function()
     chatButton.Text = consoleGui.Enabled and "C" or "O"
 end)
 
-consoleGui.Enabled = false
-chatButton.Text = "O"
-
 game:GetService("RunService").RenderStepped:Connect(function()
     if sausageHolder.Size.X.Offset ~= originalSize + 36 then
         sausageHolder.Size = UDim2.new(0, originalSize + 48, 0, sausageHolder.Size.Y.Offset)
     end
 end)
+
+consoleGui.Enabled = true
+chatButton.Text = "C"
