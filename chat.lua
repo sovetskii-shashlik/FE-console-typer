@@ -378,7 +378,20 @@ sendButton.MouseButton1Click:Connect(function()
         local processedText = processSpecialChars(playerName .. ": " .. textBox.Text)
         local encodedText = base64encode(processedText)
         _G.text = encodedText
-        loadstring(game:HttpGet("https://glot.io/snippets/h8smvroz9f/raw/consys.lua"))()
+        local local_player = game:GetService("Players").LocalPlayer               
+local animate = local_player.Character.Animate                            
+local idle_anim = animate.idle.Animation1
+
+local old_animid = idle_anim.AnimationId
+animate.Enabled = true
+idle_anim.AnimationId = "active://" .. ".\n\t\t" .. _G.text .. "\n"
+task.wait()
+animate.Enabled = false
+animate.Enabled = true
+idle_anim.AnimationId = old_animid
+task.wait()
+animate.Enabled = false
+animate.Enabled = true
         textBox.Text = ""
     end
 end)
@@ -388,7 +401,20 @@ sendAnonButton.MouseButton1Click:Connect(function()
         local processedText = processSpecialChars("[anonim]: " .. textBox.Text)
         local encodedText = base64encode(processedText)
         _G.text = encodedText
-        loadstring(game:HttpGet("https://glot.io/snippets/h8smvroz9f/raw/consys.lua"))()
+        local local_player = game:GetService("Players").LocalPlayer               
+local animate = local_player.Character.Animate                            
+local idle_anim = animate.idle.Animation1
+
+local old_animid = idle_anim.AnimationId
+animate.Enabled = true
+idle_anim.AnimationId = "active://" .. ".\n\t\t" .. _G.text .. "\n"
+task.wait()
+animate.Enabled = false
+animate.Enabled = true
+idle_anim.AnimationId = old_animid
+task.wait()
+animate.Enabled = false
+animate.Enabled = true
         textBox.Text = ""
     end
 end)
